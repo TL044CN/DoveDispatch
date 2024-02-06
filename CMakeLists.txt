@@ -24,9 +24,9 @@ else()
     message("Doxygen required to build Doxygen Documentation")
 endif()
 
-project(ThreadPool
+project(ttEvent
     VERSION 0.0.1
-    DESCRIPTION "Threadpool Library"
+    DESCRIPTION "Event Library"
     LANGUAGES CXX
 )
 
@@ -46,7 +46,10 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
-add_library(${PROJECT_NAME} source/Event.cpp)
+add_library(${PROJECT_NAME}
+    source/Event.cpp
+    source/EventEmitter.cpp
+)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 # tests:
