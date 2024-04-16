@@ -1,4 +1,4 @@
-#include <EventEmitter.hpp>
+#include "EventEmitter.hpp"
 
 void EventEmitter::on_impl(const Event::DescriptorType& descriptor, CallbackFn&& callback) {
     mListeners[descriptor].push_back(callback);

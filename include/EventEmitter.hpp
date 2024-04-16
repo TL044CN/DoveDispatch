@@ -1,20 +1,30 @@
 /**
  * @file EventEmitter.hpp
- * @author TL044CN (gunnisan2@web.de)
+ * @author TL044CN
  * @brief EventEmitter base class for extending other classes
- * @version 0.1
+ * @version 0.2
  * @date 2024-02-06
  *
  * @copyright Copyright (c) 2024
  *
  */
-#ifndef TT_EVENT_EMITTER_HPP
-#define TT_EVENT_EMITTER_HPP
+#pragma once
 
 #include "Event.hpp"
+#include <concepts>
 #include <functional>
 #include <memory>
 #include <map>
+
+class EventEmitter;
+
+/**
+ * @brief Concept to check if a class is an Event
+ * 
+ * @tparam T the class to check
+ */
+template<typename T>
+concept EventType = std::is_base_of<Event, T>::value;
 
  /**
   * @brief Event Emitter base class to inherit from
@@ -52,11 +62,9 @@ public:
      * @tparam Evt the Event to listen to
      * @param callback the callback function
      */
-    template<typename Evt>
-        requires
-    std::is_base_of<Event, Evt>::value&&
+    template<EventType Evt> requires
         std::is_default_constructible<Evt>::value
-        void on(std::function<void(const Evt&)> callback) {
+    void on(std::function<void(const Evt&)> callback) {
         on_impl(Evt().type(),
         [functor = std::move(callback)]
         (const std::shared_ptr<Event>& event) -> void {
@@ -79,5 +87,3 @@ protected:
     std::shared_ptr<Event> emit(Event*&& event) const;
 
 };
-
-#endif
