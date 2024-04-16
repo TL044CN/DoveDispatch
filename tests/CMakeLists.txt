@@ -44,17 +44,18 @@ if(GCOV AND LCOV AND GENHTML)
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+      target_compile_options(${PROJECT_NAME}_tests PRIVATE -fprofile-arcs -ftest-coverage)
   elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+      target_compile_options(${PROJECT_NAME}_tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
   endif()
   message("Coverage flags: ${CMAKE_CXX_FLAGS}")
 
-  target_compile_options(${PROJECT_NAME}_tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     add_custom_target(coverage
       COMMAND ${CMAKE_MAKE_PROGRAM} test
-      COMMAND ${GCOV} -r -pb tests/CMakeFiles/${PROJECT_NAME}_tests.dir/source/*.gcno
+      COMMAND ${GCOV} -r -pb tests/CMakeFiles/${PROJECT_NAME}_tests.dir/*.gcno CMakeFiles/${PROJECT_NAME}.dir/source/*.gcno
       COMMAND ${LCOV} --capture --directory . --output-file coverage.info
       COMMAND ${GENHTML} coverage.info --output-directory out
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
