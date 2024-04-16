@@ -15,6 +15,11 @@ private:
     std::string mMyEventString;
 
 public:
+
+    inline virtual DescriptorType type() const override {
+        return "MyEvent";
+    }
+
     MyEvent(const std::string& text) : mMyEventString(text) {}
 
     inline std::string getText() const { return mMyEventString; }
