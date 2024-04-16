@@ -46,8 +46,11 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PUBLIC include
 )
-
-target_compile_options(${PROJECT_NAME} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(${PROJECT_NAME} PRIVATE -fprofile-arcs -ftest-coverage)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+endif()
 
 set(TTEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
