@@ -1,6 +1,8 @@
 #include "catch2/catch.hpp"
 #include "Event.hpp"
 
+#include <string>
+
 // Derived class that implements all the pure virtual functions of the 'Event' class
 class DerivedEvent : public Event {
 public:
@@ -9,10 +11,23 @@ public:
     }
 };
 
-TEST_CASE("Event destructor test") {
-    SECTION("Event object is destroyed") {
-        Event* event = new DerivedEvent(); // Allocate an object of the derived class
+TEST_CASE("Event test") {
+    DerivedEvent* event = new DerivedEvent;
+
+    SECTION("Event object is not null") {
+        // Check if the event object is not null
+        REQUIRE(event != nullptr);
+    }
+
+    SECTION("Event type is correct") {
+        // Create a new DerivedEvent object
+        REQUIRE(std::string(event->type()) == "DerivedEvent");
+    }
+
+    SECTION("Event object is deleted") {
+        // Delete the event object
         delete event;
-        // No assertion needed, just checking if the destructor is called without any errors
+
+        REQUIRE(true);
     }
 }
