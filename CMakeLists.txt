@@ -50,8 +50,12 @@ add_library(${PROJECT_NAME}
     source/Event.cpp
     source/EventEmitter.cpp
 )
-target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_include_directories(${PROJECT_NAME}
+    PUBLIC include
+)
+
+set(TTEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # tests:
-#enable_testing()
-#add_subdirectory(tests)
+enable_testing()
+add_subdirectory(tests)

@@ -1,16 +1,14 @@
 /**
  * @file Event.hpp
- * @author TL044CN (gunnisan2@web.de)
+ * @author TL044CN (tl044cn@shodan.fyi)
  * @brief Event class for extending the Event System
- * @version 0.1
+ * @version 0.2
  * @date 2024-02-06
  *
  * @copyright Copyright (c) 2024
  *
  */
-#ifndef TT_EVENT_HPP
-#define TT_EVENT_HPP
-
+#pragma once
 #include <cstdint>
 
  /**
@@ -37,5 +35,3 @@ public:
      */
     virtual DescriptorType type() const = 0;
 };
-
-#endif
