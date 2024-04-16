@@ -1,6 +1,6 @@
 /**
  * @file EventEmitter.hpp
- * @author TL044CN (tl044cn@shodan.fyi)
+ * @author TL044CN
  * @brief EventEmitter base class for extending other classes
  * @version 0.2
  * @date 2024-02-06

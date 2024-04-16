@@ -1,6 +1,6 @@
 /**
  * @file Event.hpp
- * @author TL044CN (tl044cn@shodan.fyi)
+ * @author TL044CN
  * @brief Event class for extending the Event System
  * @version 0.2
  * @date 2024-02-06

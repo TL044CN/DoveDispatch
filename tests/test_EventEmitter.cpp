@@ -1,5 +1,3 @@
-// FILEPATH: /media/D/Development/ttEvent/Event++/tests/test_EventEmitter.cpp
-
 #include "catch2/catch.hpp"
 #include "Event.hpp"
 #include "EventEmitter.hpp"
