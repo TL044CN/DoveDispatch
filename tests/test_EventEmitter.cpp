@@ -39,16 +39,17 @@ TEST_CASE("EventEmitter tests") {
     }
 
     SECTION("Listener is not called for different event type") {
-        bool wasCalled = false;
+        int callCount = 0;
 
-        emitter.on<TestEvent1>([&wasCalled](const TestEvent1&) {
-            wasCalled = true;
+        emitter.on<TestEvent1>([&callCount](const TestEvent1&) {
+            callCount++;
         });
 
         // Emitting a different type of event
+        emitter.pub_emit(new TestEvent1);
         emitter.pub_emit(new TestEvent2);
 
-        REQUIRE_FALSE(wasCalled);
+        REQUIRE(callCount == 1);
     }
 
     SECTION("Multiple listeners are called") {
