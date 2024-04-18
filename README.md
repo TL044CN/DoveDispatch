@@ -1,6 +1,6 @@
 # Dove Dispatch
 
-[![Build Status](https://jenkins.shodan.fyi/buildStatus/icon?job=ttEvent)](https://jenkins.shodan.fyi/job/ttEvent/)
+[![Build Status](https://jenkins.shodan.fyi/buildStatus/icon?job=DoveDispatch)](https://jenkins.shodan.fyi/job/DoveDispatch/)
 A simple Event System, for easily creating Event Emitting classes with Events that can hold data if desired.
 
 ## Example Usage
