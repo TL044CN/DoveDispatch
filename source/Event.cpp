@@ -1,3 +1,7 @@
 #include "Event.hpp"
 
-Event::~Event() {};
+namespace DoveDispatch {
+
+    Event::~Event() {};
+
+}   // namespace DoveDispatch

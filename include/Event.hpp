@@ -11,6 +11,8 @@
 #pragma once
 #include <cstdint>
 
+namespace DoveDispatch{
+
  /**
   * @brief Event Base class to inherit from
   * @note the type() function must be implemented in the derived class.
@@ -35,3 +37,5 @@ public:
      */
     virtual DescriptorType type() const = 0;
 };
+
+}   // namespace DoveDispatch
