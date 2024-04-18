@@ -2,6 +2,8 @@
 #include "Event.hpp"
 #include "EventEmitter.hpp"
 
+using namespace DoveDispatch;
+
 class TestEvent1 : public Event {
 public:
     virtual DescriptorType type() const override {

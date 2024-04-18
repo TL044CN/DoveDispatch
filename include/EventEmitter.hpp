@@ -16,6 +16,8 @@
 #include <memory>
 #include <map>
 
+namespace DoveDispatch {
+
 class EventEmitter;
 
 /**
@@ -87,3 +89,5 @@ protected:
     std::shared_ptr<Event> emit(Event*&& event) const;
 
 };
+
+}   // namespace DoveDispatch

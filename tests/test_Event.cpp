@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace DoveDispatch;
+
 // Derived class that implements all the pure virtual functions of the 'Event' class
 class DerivedEvent : public Event {
 public:
