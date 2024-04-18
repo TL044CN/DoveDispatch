@@ -11,10 +11,12 @@
 #pragma once
 #include <cstdint>
 
+namespace DoveDispatch{
+
  /**
   * @brief Event Base class to inherit from
-  * @note adding static constexpr DescriptorType = "...";
-  *       should be done to derived classes
+  * @note the type() function must be implemented in the derived class.
+  *       It is checked during dispatch to differentiate between different events
   */
 class Event {
 private:
@@ -35,3 +37,5 @@ public:
      */
     virtual DescriptorType type() const = 0;
 };
+
+}   // namespace DoveDispatch

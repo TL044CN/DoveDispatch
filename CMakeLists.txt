@@ -2,6 +2,21 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 set(CXX_STANDARD_REQUIRED ON)
 
+project(DoveDispatch
+    VERSION 0.0.1
+    DESCRIPTION "Event Library"
+    LANGUAGES CXX
+)
+
+find_program(LCOV lcov)
+find_program(GENHTML genhtml)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    find_program(GCOV gcov)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    find_program(GCOV llvm-cov)
+endif()
+
 #find_program(SCCACHE sccache)
 #if(SCCACHE)
 #    message("sccache found")
@@ -24,28 +39,6 @@ else()
     message("Doxygen required to build Doxygen Documentation")
 endif()
 
-project(ttEvent
-    VERSION 0.0.1
-    DESCRIPTION "Event Library"
-    LANGUAGES CXX
-)
-
-find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    option(GIT_SUBMODULE "Check submodules during build" ON)
-    if(GIT_SUBMODULE)
-        message(STATUS "Submodule update")
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE GIT_SUBMODULE_RESULT
-        )
-        if(NOT GIT_SUBMODULE_RESULT EQUAL "0")
-            message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMODULE_RESULT}")
-        endif()
-    endif()
-endif()
-
 add_library(${PROJECT_NAME}
     source/Event.cpp
     source/EventEmitter.cpp
@@ -53,6 +46,23 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PUBLIC include
 )
+if(GCOV AND LCOV AND GENHTML)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        target_compile_options(${PROJECT_NAME} PRIVATE -fprofile-arcs -ftest-coverage)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${PROJECT_NAME} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+    endif()
+else()
+    if(NOT GCOV)
+        message("gcov not found. No coverage report will be generated.")
+    endif()
+    if(NOT LCOV)
+        message("lcov not found. No coverage report will be generated.")
+    endif()
+    if(NOT GENHTML)
+        message("genhtml not found. No coverage report will be generated.")
+    endif()
+endif()
 
 set(TTEVENT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

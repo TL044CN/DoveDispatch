@@ -1,5 +1,7 @@
 #include "EventEmitter.hpp"
 
+namespace DoveDispatch {
+
 void EventEmitter::on_impl(const Event::DescriptorType& descriptor, CallbackFn&& callback) {
     mListeners[descriptor].push_back(callback);
 }
@@ -13,3 +15,5 @@ std::shared_ptr<Event> EventEmitter::emit(Event*&& event) const {
 
     return sharedEvent;
 }
+
+}   // namespace DoveDispatch

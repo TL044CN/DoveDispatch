@@ -1,8 +1,10 @@
+# Dove Dispatch
+
 [![Build Status](https://jenkins.shodan.fyi/buildStatus/icon?job=ttEvent)](https://jenkins.shodan.fyi/job/ttEvent/)
-# Event System
 A simple Event System, for easily creating Event Emitting classes with Events that can hold data if desired.
 
-# Example Usage:
+## Example Usage
+
 ```c++
 #include "Event.hpp"
 #include "EventEmitter.hpp"
@@ -15,6 +17,11 @@ private:
     std::string mMyEventString;
 
 public:
+
+    inline virtual DescriptorType type() const override {
+        return "MyEvent";
+    }
+
     MyEvent(const std::string& text) : mMyEventString(text) {}
 
     inline std::string getText() const { return mMyEventString; }
