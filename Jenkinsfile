@@ -46,8 +46,9 @@ pipeline {
                     if(COMPILER == 'clang') {
                         sh 'apt install -y llvm'
                     }
-                    sh "apt install -y lcov doxygen"
-                    sh "apt install -y python3-venv"
+                    sh "dpkg --configure -a"
+                    sh "apt install -y lcov"
+                    sh "apt install --fix-missing -y python3-venv"
                     sh """python3 -m venv venv
                         . venv/bin/activate
                         pip install lcov_cobertura
@@ -58,7 +59,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh """
-                cmake -B build/ -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+                cmake -B build/ -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DDoveDispatch_BUILD_DOCS=OFF
                 cmake --build build/ --config=${BUILD_TYPE} -j
                 """
             }
@@ -87,21 +88,27 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    sh """
-                        apt install -y cppcheck python3-venv
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install lizard
-                        cppcheck --enable=all --inconclusive --xml --xml-version=2 -I include/ source/* include/* 2> cppcheck.xml
-                        lizard -X "source/*" "include/*" > lizard.xml
-                    """
-
-                    recordIssues(
-                        sourceCodeRetention: 'LAST_BUILD',
-                        tools: [
-                            cppCheck(pattern: 'cppcheck.xml'),
-                        ]
-                    )
+                    sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I include/ source/* include/* 2> cppcheck.xml"
+                    script {
+                        def previousBuild = currentBuild.previousBuild
+                        if(previousBuild != null) {
+                            def previousBuildId = previousBuild.id
+                            recordIssues(
+                                sourceCodeRetention: 'LAST_BUILD',
+                                reference: previousBuildId,
+                                tools: [
+                                    cppCheck(pattern: 'cppcheck.xml'),
+                                ]
+                            )
+                        } else {
+                            recordIssues(
+                                sourceCodeRetention: 'LAST_BUILD',
+                                tools: [
+                                    cppCheck(pattern: 'cppcheck.xml'),
+                                ]
+                            )
+                        }
+                    }
                 }
             }
         }
