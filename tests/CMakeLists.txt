@@ -12,11 +12,11 @@ if(NOT catch2_POPULATED)
   add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
 endif()
 
-# Add your tests
+file(GLOB TEST_SOURCES "test_*.cpp")
+
+# Add tests
 add_executable(${PROJECT_NAME}_tests
-    test_main.cpp
-    test_Event.cpp
-    test_EventEmitter.cpp
+  ${TEST_SOURCES}
 )
 
 target_link_libraries(${PROJECT_NAME}_tests
@@ -32,8 +32,8 @@ target_include_directories(${PROJECT_NAME}_tests
 )
 
 set_target_properties(${PROJECT_NAME}_tests PROPERTIES
-    TEST_PREFIX "test_"
-    TEST_SUFFIX ""
+TEST_PREFIX "test_"
+TEST_SUFFIX ""
 )
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
