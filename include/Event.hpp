@@ -10,6 +10,7 @@
  */
 #pragma once
 #include <cstdint>
+#include <string>
 
 namespace DoveDispatch{
 
@@ -26,7 +27,7 @@ public:
     /**
      * @brief Descriptor Type of the Event Class
      */
-    using DescriptorType = const char*;
+    using DescriptorType = std::string;
 
     virtual ~Event();
 
