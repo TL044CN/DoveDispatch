@@ -20,4 +20,8 @@ print_conditional_status(${PROJECT_NAME}_BUILD_TESTS
     "Build Tests:  Yes" 
     "Build Tests:  No"
 )
+print_conditional_status(${PROJECT_NAME}_BUILD_DOCS
+    "Build Docs:   Yes"
+    "Build Docs:   No"
+)
 message(STATUS "<<========|${PROJECT_NAME}|=========")
