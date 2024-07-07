@@ -26,7 +26,7 @@ class EventEmitter;
  * @tparam T the class to check
  */
 template<typename T>
-concept EventType = std::is_base_of<Event, T>::value;
+concept EventType = std::derived_from<T, Event>;
 
  /**
   * @brief Event Emitter base class to inherit from
@@ -87,6 +87,18 @@ protected:
      * @return std::shared_ptr<Event> shared Pointer to the newly dispatched Event
      */
     std::shared_ptr<Event> emit(Event*&& event) const;
+
+    /**
+     * @brief Emits the given Event, calling all Listeners
+     * @code{.cpp}
+     * auto& myEvtPtr = myEmitter.emit(std::make_unique<MyEvent>());
+     * @endcode
+     * @note Events should be created in this function,
+     *       because Ownership is transfered to the emitter
+     * @param event the Event to emit
+     * @return std::shared_ptr<Event> shared Pointer to the newly dispatched Event
+     */
+    std::shared_ptr<Event> emit(std::unique_ptr<Event>&& event) const;
 
 };
 

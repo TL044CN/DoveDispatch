@@ -16,4 +16,8 @@ std::shared_ptr<Event> EventEmitter::emit(Event*&& event) const {
     return sharedEvent;
 }
 
+std::shared_ptr<Event> EventEmitter::emit(std::unique_ptr<Event>&& event) const {
+    return emit(event.release());
+}
+
 }   // namespace DoveDispatch
