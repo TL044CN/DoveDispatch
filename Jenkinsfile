@@ -46,9 +46,9 @@ pipeline {
                     if(COMPILER == 'clang') {
                         sh 'apt install -y llvm'
                     }
-                    sh "dpkg --configure -a"
+                    sh "apt install -y cppcheck"
                     sh "apt install -y lcov"
-                    sh "apt install --fix-missing -y python3-venv"
+                    sh "apt install -y python3-venv"
                     sh """python3 -m venv venv
                         . venv/bin/activate
                         pip install lcov_cobertura
