@@ -33,13 +33,6 @@ pipeline {
                 }
             }
         }
-        stage('initialize submodules') {
-            steps {
-                script {
-                    sh 'git submodule update --init --recursive'
-                }
-            }
-        }
         stage('Prepare Tools'){
             steps {
                 script {
