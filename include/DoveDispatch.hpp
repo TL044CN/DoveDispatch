@@ -1,7 +1,7 @@
 /**
  * @file DoveDispatch.hpp
  * @author TL044CN
- * @brief 
+ * @brief Include file for the DoveDispatch Library
  * @version 0.1
  * @date 2024-04-18
  * 
