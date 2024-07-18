@@ -26,8 +26,8 @@ option(${PROJECT_NAME}_BUILD_DOCS "Build Documentation" ON)
 
 # modify the build options if this is a submodule
 if(IS_SUBMODULE)
-    set(${PROJECT_NAME}_BUILD_TESTS OFF CACHE BOOL "Build Tests")
-    set(${PROJECT_NAME}_BUILD_DOCS OFF CACHE BOOL "Build Documentation")
+    set(${PROJECT_NAME}_BUILD_TESTS OFF CACHE BOOL "Build Tests" FORCE)
+    set(${PROJECT_NAME}_BUILD_DOCS OFF CACHE BOOL "Build Documentation" FORCE)
 endif()
 
 #print info about the build options
