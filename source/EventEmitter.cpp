@@ -20,4 +20,14 @@ std::shared_ptr<Event> EventEmitter::emit(std::unique_ptr<Event>&& event) const 
     return emit(event.release());
 }
 
+std::future<std::shared_ptr<Event>> EventEmitter::emit_async(Event*&& event) const {
+    return std::async(std::launch::async, [this, evt = std::move(event)]() mutable {
+        return emit(std::move(evt));
+    });
+}
+
+std::future<std::shared_ptr<Event>> EventEmitter::emit_async(std::unique_ptr<Event>&& event) const {
+    return emit_async(event.release());
+}
+
 }   // namespace DoveDispatch

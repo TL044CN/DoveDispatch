@@ -15,6 +15,9 @@
 #include <functional>
 #include <memory>
 #include <map>
+#include <vector>
+#include <future>
+#include <thread>
 
 namespace DoveDispatch {
 
@@ -75,6 +78,31 @@ public:
         });
     }
 
+    /**
+     * @brief Adds a Listener for the given Event asynchronously
+     * @details Adds a Listener for the given Event asynchronously.
+     *          This function is non-blocking and returns immediately.
+     *
+     * @code{.cpp}
+     * MyEmitter.on_async<MyEvent>(std::bind(&MyClass::myHandle, this, std::placeholders::_1));
+     * @endcode
+     *
+     * @tparam Evt the Event to listen to
+     * @param callback the callback function
+     */
+    template<EventType Evt> requires
+        std::is_default_constructible<Evt>::value
+    void on_async(std::function<void(const Evt&)> callback) {
+        on_impl(Evt().type(),
+        [functor = std::move(callback)]
+        (const std::shared_ptr<Event>& event) -> void {
+            std::thread([functor, event]() {
+                const auto& evt = *static_cast<Evt*>(&*event);
+                functor(evt);
+            }).detach();
+        });
+    }
+
 protected:
     /**
      * @brief Emits the given Event, calling all Listeners
@@ -99,6 +127,30 @@ protected:
      * @return std::shared_ptr<Event> shared Pointer to the newly dispatched Event
      */
     std::shared_ptr<Event> emit(std::unique_ptr<Event>&& event) const;
+
+    /**
+     * @brief Emits the given Event asynchronously, calling all Listeners
+     * @code{.cpp}
+     * auto& myEvtPtr = myEmitter.emit_async(new MyEvent());
+     * @endcode
+     * @note Events should be created in this function,
+     *       because Ownership is transfered to the emitter
+     * @param event the Event to emit
+     * @return std::future<std::shared_ptr<Event>> future to the shared Pointer to the newly dispatched Event
+     */
+    std::future<std::shared_ptr<Event>> emit_async(Event*&& event) const;
+
+    /**
+     * @brief Emits the given Event asynchronously, calling all Listeners
+     * @code{.cpp}
+     * auto& myEvtPtr = myEmitter.emit_async(std::make_unique<MyEvent>());
+     * @endcode
+     * @note Events should be created in this function,
+     *       because Ownership is transfered to the emitter
+     * @param event the Event to emit
+     * @return std::future<std::shared_ptr<Event>> future to the shared Pointer to the newly dispatched Event
+     */
+    std::future<std::shared_ptr<Event>> emit_async(std::unique_ptr<Event>&& event) const;
 
 };
 

@@ -31,6 +31,7 @@ if(IS_SUBMODULE)
 endif()
 
 #print info about the build options
+include(CMakeFiles/Dependencies.cmake)
 include(CMakeFiles/PrintInfo.cmake)
 
 # add the sources
